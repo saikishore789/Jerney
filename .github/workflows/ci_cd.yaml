@@ -223,12 +223,12 @@ jobs:
           sed -i "${FRONTEND_LINE}s|.*|          image: ${FRONTEND_IMAGE}:${IMAGE_TAG}|" kubernetes/jerney.yaml
 
           echo "✅ Updated images to tag: ${IMAGE_TAG}"
-          grep -n "image:" kuberenetes/jerney.yaml
+          grep -n "image:" kubernetes/jerney.yaml
 
       - name: Commit and push manifest update
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add kuberenetes/jerney.yaml
+          git add kubernetes/jerney.yaml
           git diff --cached --quiet || git commit -m "ci: update kubernetes images to ${{ steps.sha.outputs.short }} [skip ci]"
           git push
