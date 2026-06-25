@@ -1,11 +1,14 @@
 # ---- Build stage ----
-FROM node:20.19.3-alpine3.21 AS build
+FROM  node:20-alpine AS build
+RUN apk --no-cache upgrade
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci --only=production && npm cache clean --force
+COPY package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
 
 # ---- Production stage ----
-FROM node:20.19.3-alpine3.21 AS production
+FROM node:20-alpine AS production
+
+RUN apk --no-cache upgrade
 
 # Security: run as non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
