@@ -1,17 +1,17 @@
 # ---- Build stage ----
-FROM node:20-alpine AS build
+FROM node:20.19.3-alpine3.21 AS build
 WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm ci --only=production && npm cache clean --force
 
 # ---- Production stage ----
-FROM node:20-alpine AS production
+FROM node:20.19.3-alpine3.21 AS production
 
 # Security: run as non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
 # Security: remove unnecessary packages
-RUN apk --no-cache add dumb-init:1.2.5-r3
+RUN apk add --no-cache dumb-init=1.2.5-r3
 
 WORKDIR /app
 
